@@ -7,9 +7,9 @@ import jakarta.persistence.Id;
 @Entity
 public class Transport {
     private String type;
-    private Object endpoint;
-   @Id
-   @GeneratedValue
+    @Id
+    private String endpoint;
+
 
     public String getType() {
         return type;
@@ -19,18 +19,27 @@ public class Transport {
         this.type = type;
     }
 
-    public Object getEndpoint() {
+    public String getEndpoint() {
         return endpoint;
     }
 
-    public void setEndpoint(Object endpoint) {
+    public void setEndpoint(String endpoint) {
         this.endpoint = endpoint;
     }
 
-    public Transport(String type, Object endpoint) {
+    public Transport(String type, String endpoint) {
         this.type = type;
         this.endpoint = endpoint;
     }
+
+    @Override
+    public String toString() {
+        return "Transport{" +
+                "type='" + type + '\'' +
+                ", endpoint='" + endpoint + '\'' +
+                '}';
+    }
+
     public Transport() {
 
     }

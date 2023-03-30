@@ -1,38 +1,18 @@
-package com.example.subscriptionproject.model;
+package com.example.subscriptionproject;
 
-import jakarta.persistence.*;
+import com.example.subscriptionproject.model.Transport;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.UUID;
 
-@Entity
-@Table(name = "subscription")
-public class Subscription {
-
-   @Id
-   @GeneratedValue(strategy = GenerationType.UUID)
+public class SubResponseDTO {
     private UUID subscriptionId;
-    @Column(name = "createdAt")
     private LocalDateTime createdAt;
-    @Column(name = "expiresAt")
     private LocalDateTime expiresAt;
 
-    @Column(name = "status")
     private String status;
-    @Column(name = "family")
     private String family;
-    @OneToOne(cascade = CascadeType.MERGE)
     private Transport transport;
-
-    public Transport getTransport() {
-        return transport;
-    }
-
-    public Subscription(String family, Transport transport) {
-        this.family = Objects.requireNonNull(family);
-        this.transport = Objects.requireNonNull(transport);
-    }
-
 
     public UUID getSubscriptionId() {
         return subscriptionId;
@@ -42,17 +22,6 @@ public class Subscription {
         this.subscriptionId = subscriptionId;
     }
 
-    public void setTransport(Transport transport) {
-        this.transport = transport;
-    }
-
-    public String getFamily() {
-        return family;
-    }
-
-    public Subscription() {
-
-    }
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -77,7 +46,23 @@ public class Subscription {
         this.status = status;
     }
 
-    public Subscription(UUID subscriptionId, LocalDateTime createdAt, LocalDateTime expiresAt, String status, String family, Transport transport) {
+    public String getFamily() {
+        return family;
+    }
+
+    public void setFamily(String family) {
+        this.family = family;
+    }
+
+    public Transport getTransport() {
+        return transport;
+    }
+
+    public void setTransport(Transport transport) {
+        this.transport = transport;
+    }
+
+    public SubResponseDTO(UUID subscriptionId, LocalDateTime createdAt, LocalDateTime expiresAt, String status, String family, Transport transport) {
         this.subscriptionId = subscriptionId;
         this.createdAt = createdAt;
         this.expiresAt = expiresAt;
@@ -86,13 +71,9 @@ public class Subscription {
         this.transport = transport;
     }
 
-    public void setFamily(String family) {
-        this.family = family;
-    }
-
     @Override
     public String toString() {
-        return "Subscription{" +
+        return "SubResponseDTO{" +
                 "subscriptionId=" + subscriptionId +
                 ", createdAt=" + createdAt +
                 ", expiresAt=" + expiresAt +
