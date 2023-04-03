@@ -25,7 +25,11 @@ public class SubscriptionController {
     @PostMapping("/subs")
     @ResponseBody
     public SubResponseDTO create(@RequestBody SubCreationDTO subCreationDTO) {
+<<<<<<< HEAD
         //SubResponseDTO subResponseDTO = mapper.toSub(subCreationDTO);
+=======
+        SubResponseDTO subResponseDTO = mapper.toSub(subCreationDTO);
+>>>>>>> c3d2dd1f781b836a64cb499e8c600d9bd52ef819
         return subscriptionService.create(subCreationDTO);
     }
 
