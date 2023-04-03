@@ -10,7 +10,6 @@ import java.util.*;
 public class Subscription {
 
    @Id
-   @GeneratedValue(strategy = GenerationType.UUID)
     private UUID subscriptionId;
     @Column(name = "createdAt")
     private LocalDateTime createdAt;
