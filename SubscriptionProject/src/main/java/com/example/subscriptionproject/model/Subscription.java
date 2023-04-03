@@ -73,6 +73,11 @@ public class Subscription {
         this.status = status;
     }
 
+    public Subscription(String family, Transport transport) {
+        this.family = family;
+        this.transport = transport;
+    }
+
     public Subscription(UUID subscriptionId, LocalDateTime createdAt, LocalDateTime expiresAt, String status, String family, Transport transport) {
         this.subscriptionId = subscriptionId;
         this.createdAt = createdAt;

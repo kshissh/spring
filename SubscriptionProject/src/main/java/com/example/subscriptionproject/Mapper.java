@@ -1,8 +1,8 @@
 package com.example.subscriptionproject;
 
-import com.example.subscriptionproject.DTO.SubCreationDTO;
-import com.example.subscriptionproject.DTO.SubResponseDTO;
-import com.example.subscriptionproject.DTO.TransportDTO;
+import com.example.subscriptionproject.DTOs.SubCreationDTO;
+import com.example.subscriptionproject.DTOs.SubResponseDTO;
+import com.example.subscriptionproject.DTOs.TransportDTO;
 import com.example.subscriptionproject.model.Subscription;
 import com.example.subscriptionproject.model.Transport;
 import org.springframework.stereotype.Component;
@@ -18,10 +18,10 @@ public class Mapper {
         LocalDateTime date2 = sub.getExpiresAt();
         String status = sub.getStatus();
         String family = sub.getFamily();
-        TransportDTO transport = toTransDTO(sub.getTransport());
+        TransportDTO transport = toTransportDTO(sub.getTransport());
         return new SubResponseDTO(subId, date1,date2,status,family,transport);
     }
-    public TransportDTO toTransDTO(Transport transport) {
+    public TransportDTO toTransportDTO(Transport transport) {
         if (transport == null) {
             return null;
         }
@@ -39,8 +39,9 @@ public class Mapper {
         return transport;
     }
 
-    public SubResponseDTO toSub(SubCreationDTO subCreationDTO) {
-        return new SubResponseDTO(subCreationDTO.getFamily(),subCreationDTO.getTransport());
+    public Subscription toSub(SubCreationDTO subCreationDTO) {
+        Transport transport = toTransport(subCreationDTO.getTransport());
+        return new Subscription(subCreationDTO.getFamily(),transport);
     }
 
 
