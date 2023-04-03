@@ -1,7 +1,6 @@
 package com.example.subscriptionproject.model;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 
 @Entity

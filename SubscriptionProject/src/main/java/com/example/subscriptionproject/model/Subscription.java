@@ -24,13 +24,9 @@ public class Subscription {
     @OneToOne(cascade = CascadeType.MERGE)
     private Transport transport;
 
+
     public Transport getTransport() {
         return transport;
-    }
-
-    public Subscription(String family, Transport transport) {
-        this.family = Objects.requireNonNull(family);
-        this.transport = Objects.requireNonNull(transport);
     }
 
 
