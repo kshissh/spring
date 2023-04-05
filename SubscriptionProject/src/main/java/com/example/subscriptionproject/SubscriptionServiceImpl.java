@@ -2,11 +2,11 @@ package com.example.subscriptionproject;
 
 import com.example.subscriptionproject.model.Subscription;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
-;
 
 
 @Service
@@ -41,7 +41,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         }
         return null;
     }
-
     @Override
     public void delete(UUID subscriptionId) {
         subscriptionRepo.deleteById(subscriptionId);
@@ -53,5 +52,16 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         Subscription sub = subscription.orElse(null);
         return sub;
     }
-
+    @Scheduled(initialDelay = 10000L,fixedDelay = 300000L)
+    public void checkExpiredSubscriptions() {
+        List<Subscription> subscriptions = subscriptionRepo.findAll();
+        for (Subscription subscription : subscriptions) {
+            if (subscription.getExpiresAt() == LocalDateTime.from(subscription.getExpiresAt())) {
+                subscription.setStatus("SUSPENDED");
+                subscription.setCreatedAt(subscription.getExpiresAt());
+                subscriptionRepo.save(subscription);
+            }
+        }
+    }
 }
+

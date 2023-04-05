@@ -57,5 +57,4 @@ public class SubscriptionController {
         return mapper.toDto(subscription);
     }
 
-
 }
