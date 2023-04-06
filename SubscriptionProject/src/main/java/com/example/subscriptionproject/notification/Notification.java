@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public class Notification {
     private String event;
-    private UUID id;
+    private String id;
 
     public String getEvent() {
         return event;
@@ -14,15 +14,15 @@ public class Notification {
         this.event = event;
     }
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public Notification(String event, UUID id) {
+    public Notification(String event, String id) {
         this.event = event;
         this.id = id;
     }

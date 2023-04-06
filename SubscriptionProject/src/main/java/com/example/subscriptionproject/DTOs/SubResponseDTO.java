@@ -2,10 +2,9 @@ package com.example.subscriptionproject.DTOs;
 
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 public class SubResponseDTO {
-    private UUID subscriptionId;
+    private String subscriptionId;
     private LocalDateTime createdAt;
     private LocalDateTime expiresAt;
 
@@ -13,11 +12,11 @@ public class SubResponseDTO {
     private String family;
     private TransportDTO transport;
 
-    public UUID getSubscriptionId() {
+    public String getSubscriptionId() {
         return subscriptionId;
     }
 
-    public void setSubscriptionId(UUID subscriptionId) {
+    public void setSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
     }
 
@@ -61,7 +60,7 @@ public class SubResponseDTO {
         this.transport = transport;
     }
 
-    public SubResponseDTO(UUID subscriptionId, LocalDateTime createdAt, LocalDateTime expiresAt, String status, String family, TransportDTO transport) {
+    public SubResponseDTO(String subscriptionId, LocalDateTime createdAt, LocalDateTime expiresAt, String status, String family, TransportDTO transport) {
         this.subscriptionId = subscriptionId;
         this.createdAt = createdAt;
         this.expiresAt = expiresAt;

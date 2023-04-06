@@ -8,12 +8,12 @@ import com.example.subscriptionproject.model.Transport;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
+
 
 @Component
 public class Mapper {
-    public SubResponseDTO toDto(Subscription sub) {
-        UUID subId = sub.getSubscriptionId();
+    public SubResponseDTO toSubResponseDto(Subscription sub) {
+        String subId = sub.getSubscriptionId();
         LocalDateTime date1 = sub.getCreatedAt();
         LocalDateTime date2 = sub.getExpiresAt();
         String status = sub.getStatus();
@@ -39,7 +39,7 @@ public class Mapper {
         return transport;
     }
 
-    public Subscription toSub(SubCreationDTO subCreationDTO) {
+    public Subscription toSubscription(SubCreationDTO subCreationDTO) {
         Transport transport = toTransport(subCreationDTO.getTransport());
         return new Subscription(subCreationDTO.getFamily(),transport);
     }

@@ -3,14 +3,13 @@ package com.example.subscriptionproject.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.*;
 
 @Entity
 @Table(name = "subscription")
 public class Subscription {
 
-   @Id
-    private UUID subscriptionId;
+    @Id
+    private String subscriptionId;
     @Column(name = "createdAt")
     private LocalDateTime createdAt;
     @Column(name = "expiresAt")
@@ -28,12 +27,11 @@ public class Subscription {
         return transport;
     }
 
-
-    public UUID getSubscriptionId() {
+    public String getSubscriptionId() {
         return subscriptionId;
     }
 
-    public void setSubscriptionId(UUID subscriptionId) {
+    public void setSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
     }
 
@@ -77,7 +75,7 @@ public class Subscription {
         this.transport = transport;
     }
 
-    public Subscription(UUID subscriptionId, LocalDateTime createdAt, LocalDateTime expiresAt, String status, String family, Transport transport) {
+    public Subscription(String subscriptionId, LocalDateTime createdAt, LocalDateTime expiresAt, String status, String family, Transport transport) {
         this.subscriptionId = subscriptionId;
         this.createdAt = createdAt;
         this.expiresAt = expiresAt;

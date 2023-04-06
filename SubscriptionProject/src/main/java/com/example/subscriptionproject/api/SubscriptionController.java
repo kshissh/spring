@@ -5,10 +5,10 @@ import com.example.subscriptionproject.Mapper;
 import com.example.subscriptionproject.DTOs.SubCreationDTO;
 import com.example.subscriptionproject.SubscriptionServiceImpl;
 import com.example.subscriptionproject.model.Subscription;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 
@@ -26,35 +26,35 @@ public class SubscriptionController {
 
     @PostMapping("/subs")
     @ResponseBody
-    public SubResponseDTO create(@RequestBody SubCreationDTO subCreationDTO) {
-        Subscription subscription = mapper.toSub(subCreationDTO);
+    public SubResponseDTO create(@RequestBody @Valid SubCreationDTO subCreationDTO) {
+        Subscription subscription = mapper.toSubscription(subCreationDTO);
         subscriptionService.create(subscription);
-        return mapper.toDto(subscription);
+        return mapper.toSubResponseDto(subscription);
     }
 
     @GetMapping("/subs")
     public List<SubResponseDTO> getAll() {
         return subscriptionService.getAll()
                 .stream()
-                .map(mapper::toDto)
+                .map(mapper::toSubResponseDto)
                 .collect(Collectors.toList());
     }
 
     @PutMapping("subs/{subscriptionId}")
-    public SubResponseDTO updateSub(@PathVariable("subscriptionId") UUID subscriptionId) {
+    public SubResponseDTO updateSub(@PathVariable("subscriptionId") String subscriptionId) {
         Subscription subscription = subscriptionService.updateSubscription(subscriptionId);
-        return mapper.toDto(subscription);
+        return mapper.toSubResponseDto(subscription);
     }
 
     @DeleteMapping("/subs/{subscriptionId}")
-    public void deleteSub(@PathVariable("subscriptionId") UUID subscriptionId) {
+    public void deleteSub(@PathVariable("subscriptionId") String subscriptionId) {
         subscriptionService.delete(subscriptionId);
     }
 
      @GetMapping("/subs/{subscriptionId}")
-    public SubResponseDTO getById(@PathVariable("subscriptionId") UUID subscriptionId) {
+    public SubResponseDTO getById(@PathVariable("subscriptionId") String subscriptionId) {
         Subscription subscription = subscriptionService.getById(subscriptionId);
-        return mapper.toDto(subscription);
+        return mapper.toSubResponseDto(subscription);
     }
 
 }
