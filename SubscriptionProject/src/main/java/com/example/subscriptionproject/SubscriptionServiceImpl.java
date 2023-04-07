@@ -9,6 +9,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 
 @Service
@@ -30,7 +32,10 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
     @Override
     public List<Subscription> getAll() {
-        return subscriptionRepo.findAll();
+        Iterable<Subscription> iter = subscriptionRepo.findAll();
+        List<Subscription> subscriptions = StreamSupport.stream(iter.spliterator(), false)
+                .collect(Collectors.toList());
+        return subscriptions;
     }
     @Override
     public Subscription updateSubscription(String subscriptionId) {
@@ -43,9 +48,15 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND,"The subscription was not found");
     }
+
     @Override
     public void delete(String subscriptionId) {
-        subscriptionRepo.deleteById(subscriptionId);
+        Subscription existingSubscription = subscriptionRepo.findById(subscriptionId).orElse(null);
+        if (existingSubscription != null) {
+            subscriptionRepo.deleteById(subscriptionId);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"The subscription was not found");
+        }
     }
 
     @Override
@@ -56,15 +67,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             return sub;
         } throw new ResponseStatusException(HttpStatus.NOT_FOUND,"The subscription was not found");
     }
-    @Scheduled(initialDelay = 10000L,fixedDelay = 300000L)
-    public void checkExpiredSubscriptions() {
-        List<Subscription> subscriptions = subscriptionRepo.findAll();
-        for (Subscription subscription : subscriptions) {
-            if (subscription.getExpiresAt().isAfter(LocalDateTime.now())) {
-                subscription.setStatus("SUSPENDED");
-                subscriptionRepo.save(subscription);
-            }
-        }
-    }
+
 }
 

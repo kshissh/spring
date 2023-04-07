@@ -7,6 +7,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class NotificationService {
@@ -18,7 +20,9 @@ public class NotificationService {
     }
     RestTemplate restTemplate = new RestTemplate();
     public void sendNotifications() {
-        List<Subscription> subscriptions = subscriptionRepository.findAll();
+        Iterable<Subscription> iter = subscriptionRepository.findAll();
+        List<Subscription> subscriptions = StreamSupport.stream(iter.spliterator(), false)
+                .collect(Collectors.toList());
         for (Subscription sub : subscriptions) {
             String endpoint = sub.getTransport().getEndpoint();
             Notification notification = new Notification("Notification", UUID.randomUUID().toString());

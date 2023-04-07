@@ -1,6 +1,5 @@
 package com.example.subscriptionproject.notification;
 
-import java.util.UUID;
 
 public class Notification {
     private String event;

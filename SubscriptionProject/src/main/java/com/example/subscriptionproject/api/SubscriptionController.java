@@ -46,6 +46,7 @@ public class SubscriptionController {
         return mapper.toSubResponseDto(subscription);
     }
 
+
     @DeleteMapping("/subs/{subscriptionId}")
     public void deleteSub(@PathVariable("subscriptionId") String subscriptionId) {
         subscriptionService.delete(subscriptionId);

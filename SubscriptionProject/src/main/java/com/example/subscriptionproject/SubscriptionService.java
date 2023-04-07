@@ -4,7 +4,7 @@ import com.example.subscriptionproject.model.Subscription;
 import org.hibernate.ObjectNotFoundException;
 
 import java.util.List;
-import java.util.UUID;
+
 
 public interface SubscriptionService {
     Subscription create(Subscription subscription);

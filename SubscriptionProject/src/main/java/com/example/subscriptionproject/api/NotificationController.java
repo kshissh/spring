@@ -10,6 +10,8 @@ public class NotificationController {
     NotificationController(NotificationService notificationService) {
         this.notificationService = notificationService;
     }
+
+
     @PostMapping("/sendNotification")
     public void sendNotification() {
         notificationService.sendNotifications();
