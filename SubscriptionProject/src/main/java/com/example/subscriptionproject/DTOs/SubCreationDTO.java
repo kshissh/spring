@@ -34,7 +34,7 @@ public class SubCreationDTO {
 
     @AssertTrue(message = "If transport type is WEBHOOK, then there must be \"endpoint\"")
     public boolean isEndpoint() {
-        if (transport.getEndpoint() == null && !"WEBHOOK".equals(transport.getType()) ) {
+        if (transport.getEndpoint() == null && "WEBHOOK".equals(transport.getType()) ) {
             return false;
         }
         return true;

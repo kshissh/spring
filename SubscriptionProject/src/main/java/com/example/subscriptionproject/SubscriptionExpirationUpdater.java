@@ -2,14 +2,14 @@ package com.example.subscriptionproject;
 
 import com.example.subscriptionproject.model.Subscription;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-@Service
+@Component
 public class SubscriptionExpirationUpdater {
 
     private SubscriptionRepository subscriptionRepo;
