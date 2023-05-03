@@ -1,9 +1,0 @@
-{
-  "type": "record",
-  "name": "Notification",
-  "namespace": "com.example.notification.service.tool.schema",
-  "fields": [
-    { "name": "event", "type": "string" },
-    { "name": "id", "type": "string" }
-  ]
-}
