@@ -1,0 +1,44 @@
+{
+  "type": "record",
+  "name": "Subscription",
+  "namespace": "com.example.notification.schema",
+  "fields": [
+    {
+      "name": "subscriptionId",
+      "type": "string"
+    },
+    {
+      "name": "createdAt",
+      "type": "string"
+    },
+    {
+      "name": "expiresAt",
+      "type": "string"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    },
+    {
+      "name": "family",
+      "type": "string"
+    },
+    {
+      "name": "transport",
+      "type": {
+        "type": "record",
+        "name": "Transport",
+        "fields": [
+          {
+            "name": "type",
+            "type": "string"
+          },
+          {
+            "name": "endpoint",
+            "type": "string"
+          }
+        ]
+      }
+    }
+  ]
+}
