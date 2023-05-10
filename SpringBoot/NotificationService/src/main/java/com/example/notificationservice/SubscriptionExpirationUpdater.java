@@ -1,8 +1,7 @@
 package com.example.notificationservice;
 
 import com.example.notificationservice.model.Subscription;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
-import org.springframework.scheduling.support.PeriodicTrigger;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -14,16 +13,12 @@ import java.util.List;
 public class SubscriptionExpirationUpdater {
 
    private SubscriptionRepository subscriptionRepo;
-   private ThreadPoolTaskScheduler scheduler;
-
 
     public SubscriptionExpirationUpdater(SubscriptionRepository subscriptionRepo) {
         this.subscriptionRepo = subscriptionRepo;
-        scheduler = new ThreadPoolTaskScheduler();
-        scheduler.initialize();
-        scheduler.schedule(this::checkExpiredSubscriptions, new PeriodicTrigger(1000));
     }
 
+    @Scheduled(fixedRate = 3000)
     public void checkExpiredSubscriptions() {
         List<Subscription> subscriptions = subscriptionRepo.findAll();
         for (Subscription subscription : subscriptions) {
