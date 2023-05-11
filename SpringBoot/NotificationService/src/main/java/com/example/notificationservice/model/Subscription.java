@@ -1,13 +1,10 @@
 package com.example.notificationservice.model;
 
-
-import org.springframework.data.annotation.Id;
-
 import java.io.Serializable;
 
 
 public class Subscription implements Serializable{
-    @Id
+
     private String subscriptionId;
     private String createdAt;
     private String expiresAt;

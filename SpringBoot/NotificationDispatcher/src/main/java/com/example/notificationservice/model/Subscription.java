@@ -1,7 +1,5 @@
 package com.example.notificationservice.model;
 
-import org.springframework.data.redis.core.RedisHash;
-
 import java.io.Serializable;
 
 

@@ -1,12 +1,9 @@
 package com.example.notificationservice.model;
 
-import org.springframework.data.annotation.Id;
-
 import java.io.Serializable;
 
 public class Transport implements Serializable {
     private String type;
-    //@Id
     private String endpoint;
 
 
