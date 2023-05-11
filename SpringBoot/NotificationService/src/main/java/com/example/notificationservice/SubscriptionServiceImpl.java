@@ -44,8 +44,9 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             existingSubscription.setExpiresAt(LocalDateTime.now().plusHours(1).toString());
             existingSubscription.setStatus("ACTIVE");
             return subscriptionRepo.save(existingSubscription);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The subscription was not found");
         }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND,"The subscription was not found");
     }
 
     @Override
@@ -61,9 +62,11 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     @Override
     public Subscription getById(String subscriptionId) {
         Subscription sub = subscriptionRepo.findById(subscriptionId);
-        if(sub!= null) {
+        if (sub != null) {
             return sub;
-        } throw new ResponseStatusException(HttpStatus.NOT_FOUND,"The subscription was not found");
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The subscription was not found");
+        }
     }
 
 }

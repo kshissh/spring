@@ -3,8 +3,8 @@ package com.example.notificationservice.DTO;
 import java.util.Objects;
 
 public class TransportDTO {
-    String type;
-    String endpoint;
+    private String type;
+    private String endpoint;
 
     public String getType() {
         return type;

@@ -1,8 +1,8 @@
 package com.example.notificationservice.DTO;
 
 public class ViolationDTO {
-    String field;
-    String message;
+    private String field;
+    private String message;
 
     public String getField() {
         return field;

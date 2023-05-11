@@ -5,9 +5,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.List;
 
 public class ErrorDTO {
-    String errorMessage;
+    private String errorMessage;
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    List<ViolationDTO> violations;
+    private List<ViolationDTO> violations;
 
     public List<ViolationDTO> getViolations() {
         return violations;
