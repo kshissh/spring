@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service 
+metadata:
+  name: notification-service-tool
+spec:
+  selector:
+    app: notification-service-tool
+  ports:
+    - protocol: "TCP"
+      port: 8083 
+      targetPort: 8080 
+  type: NodePort 

@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification-service-tool
+spec:
+  selector:
+    matchLabels:
+      app: notification-service-tool
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: notification-service-tool
+    spec:
+      containers:
+      - name: notification-service-tool
+        image: ekaegor/notification-service-tool:v3
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
