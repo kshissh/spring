@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: notification-service-tool
-        image: ekaegor/notification-service-tool:v3
+        image: notification-service-tool:v1
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080

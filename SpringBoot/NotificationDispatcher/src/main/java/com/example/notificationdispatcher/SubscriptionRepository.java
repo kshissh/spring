@@ -4,6 +4,7 @@ import com.example.notificationservice.model.Subscription;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collections;
 import java.util.List;
 
 @Repository
@@ -15,6 +16,10 @@ public class SubscriptionRepository {
     }
 
     public List<Subscription> findAll(){
-        return redisTemplate.opsForHash().values("Sub");
+        List<Subscription> subscriptions = redisTemplate.opsForHash().values("Sub");
+        if (subscriptions == null) {
+            return Collections.emptyList();
+        }
+        return subscriptions;
     }
 }

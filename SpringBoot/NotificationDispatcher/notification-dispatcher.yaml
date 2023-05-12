@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: notification-dispatcher
-          image: ekaegor/notification-dispatcher:v3 
+          image: notification-dispatcher:v1
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080 
