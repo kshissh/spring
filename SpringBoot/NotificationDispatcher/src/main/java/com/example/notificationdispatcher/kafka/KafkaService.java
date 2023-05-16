@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -42,6 +44,7 @@ public class KafkaService {
 
     @Async("threadPoolTaskExecutor")
     @KafkaListener(topics = "engagement-topic", groupId = "myGroup")
+    @Retryable(maxAttempts = 3, backoff = @Backoff(delay = 30000))
     public void sendNotification(ConsumerRecord<String, NotificationAvro> message) throws IOException {
         LOGGER.info(String.format("Message received -> %s", message));
         List<Subscription> subscriptions = subscriptionRepository.findAll();
@@ -50,7 +53,5 @@ public class KafkaService {
             String test = mapper.avroToJson(message.value());
             restTemplate.postForLocation(endpoint, test);
         }
-        System.out.println("Execute method with configured executor - "
-                + Thread.currentThread().getName());
     }
 }
