@@ -36,6 +36,7 @@ public class SendTask implements Runnable{
             LOGGER.error("Error sending notification: " + e.getMessage());
             executorService.schedule(new SendTask(restTemplate, endpoint, notification, attempt + 1),
                     30, TimeUnit.SECONDS);
+            executorService.shutdown();
         }
     }
 }
