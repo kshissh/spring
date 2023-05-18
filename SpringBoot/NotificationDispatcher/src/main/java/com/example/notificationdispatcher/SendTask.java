@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 public class SendTask implements Runnable{
     private static final Logger LOGGER = LoggerFactory.getLogger(SendTask.class);
+    private final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
     private RestTemplate restTemplate;
     private String endpoint;
     private String notification;
@@ -33,11 +34,8 @@ public class SendTask implements Runnable{
             LOGGER.info("Notification sent successfully.");
         } catch (Exception e) {
             LOGGER.error("Error sending notification: " + e.getMessage());
-            ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-            executorService.schedule(() ->
-                            new SendTask(restTemplate, endpoint, notification, attempt + 1).run(),
+            executorService.schedule(new SendTask(restTemplate, endpoint, notification, attempt + 1),
                     30, TimeUnit.SECONDS);
-            executorService.shutdown();
         }
     }
 }
