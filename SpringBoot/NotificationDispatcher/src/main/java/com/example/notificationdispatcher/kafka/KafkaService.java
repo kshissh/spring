@@ -3,6 +3,7 @@ package com.example.notificationdispatcher.kafka;
 import com.example.notification.schema.SubscriptionAvro;
 import com.example.notification.service.tool.schema.NotificationAvro;
 import com.example.notificationdispatcher.Mapper;
+import com.example.notificationdispatcher.SendTask;
 import com.example.notificationdispatcher.SubscriptionRepository;
 import com.example.notificationservice.model.Subscription;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -16,9 +17,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+
 
 @Service
 public class KafkaService {
@@ -36,8 +35,6 @@ public class KafkaService {
     }
 
     RestTemplate restTemplate = new RestTemplate();
-    private final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
-
 
 
     @KafkaListener(topics = "notification-subscription", groupId = "myGroup")
@@ -54,22 +51,8 @@ public class KafkaService {
         for (Subscription sub : subscriptions) {
             String endpoint = sub.getTransport().getEndpoint();
             String test = mapper.avroToJson(message.value());
-            postForLocation(endpoint, test, 0);
-        }
-    }
-    public void postForLocation(String endpoint, String notification, int attempt) {
-        if (attempt > 3) {
-            LOGGER.error("Max retry attempts reached. Notification not sent.");
-            return;
-        }
-        try {
-            restTemplate.postForLocation(endpoint, notification);
-            LOGGER.info("Notification sent successfully.");
-        } catch (Exception e) {
-            LOGGER.error("Error sending notification: " + e.getMessage());
-            executorService.schedule(() ->
-                            postForLocation(endpoint, notification, attempt + 1),
-                    30, TimeUnit.SECONDS);
+            SendTask sendTask = new SendTask(restTemplate, endpoint, test, 0);
+            sendTask.run();
         }
     }
 }
