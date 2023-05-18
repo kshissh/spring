@@ -12,29 +12,32 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class KafkaService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(KafkaService.class);
     private SubscriptionRepository subscriptionRepository;
     private RedisTemplate redisTemplate;
     private Mapper mapper;
 
-    KafkaService(SubscriptionRepository subscriptionRepository, RedisTemplate redisTemplate, Mapper mapper) {
+    KafkaService(SubscriptionRepository subscriptionRepository,
+                 RedisTemplate redisTemplate,
+                 Mapper mapper) {
         this.subscriptionRepository = subscriptionRepository;
         this.redisTemplate = redisTemplate;
         this.mapper = mapper;
     }
 
     RestTemplate restTemplate = new RestTemplate();
+    private final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
 
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(KafkaService.class);
 
 
     @KafkaListener(topics = "notification-subscription", groupId = "myGroup")
@@ -51,28 +54,22 @@ public class KafkaService {
         for (Subscription sub : subscriptions) {
             String endpoint = sub.getTransport().getEndpoint();
             String test = mapper.avroToJson(message.value());
-            int retryCount = 0;
-            boolean success = false;
-            while (retryCount < 3 && !success) {
-                try {
-                    restTemplate.postForLocation(endpoint, test);
-                    success = true;
-                } catch (HttpServerErrorException | HttpClientErrorException e) {
-                    LOGGER.warn("Error occurred while sending notification: " + e.getMessage());
-                    retryCount++;
-                    if (retryCount < 3) {
-                        LOGGER.info("Retrying after 30 seconds...");
-                        try {
-                            Thread.sleep(30000); // Wait for 30 seconds before retrying
-                        } catch (InterruptedException ex) {
-                            Thread.currentThread().interrupt();
-                        }
-                    }
-                }
-            }
-            if (!success) {
-                LOGGER.error("Failed to send notification after maximum retries.");
-            }
+            postForLocation(endpoint, test, 0);
+        }
+    }
+    public void postForLocation(String endpoint, String notification, int attempt) {
+        if (attempt > 3) {
+            LOGGER.error("Max retry attempts reached. Notification not sent.");
+            return;
+        }
+        try {
+            restTemplate.postForLocation(endpoint, notification);
+            LOGGER.info("Notification sent successfully.");
+        } catch (Exception e) {
+            LOGGER.error("Error sending notification: " + e.getMessage());
+            executorService.schedule(() ->
+                            postForLocation(endpoint, notification, attempt + 1),
+                    30, TimeUnit.SECONDS);
         }
     }
 }
