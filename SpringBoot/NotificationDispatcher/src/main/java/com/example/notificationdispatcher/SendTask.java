@@ -11,7 +11,6 @@ import java.util.concurrent.TimeUnit;
 
 public class SendTask implements Runnable{
     private static final Logger LOGGER = LoggerFactory.getLogger(SendTask.class);
-    private final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
     private RestTemplate restTemplate;
     private String endpoint;
     private String notification;
