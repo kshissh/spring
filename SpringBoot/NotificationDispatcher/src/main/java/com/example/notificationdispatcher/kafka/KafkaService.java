@@ -3,6 +3,7 @@ package com.example.notificationdispatcher.kafka;
 import com.example.notification.schema.SubscriptionAvro;
 import com.example.notification.service.tool.schema.NotificationAvro;
 import com.example.notificationdispatcher.Mapper;
+import com.example.notificationdispatcher.config.ScheduledExecutorConfig;
 import com.example.notificationdispatcher.SendTask;
 import com.example.notificationdispatcher.SubscriptionRepository;
 import com.example.notificationservice.model.Subscription;
@@ -25,13 +26,15 @@ public class KafkaService {
     private SubscriptionRepository subscriptionRepository;
     private RedisTemplate redisTemplate;
     private Mapper mapper;
+    private ScheduledExecutorConfig executorService;
 
     KafkaService(SubscriptionRepository subscriptionRepository,
                  RedisTemplate redisTemplate,
-                 Mapper mapper) {
+                 Mapper mapper, ScheduledExecutorConfig executorService) {
         this.subscriptionRepository = subscriptionRepository;
         this.redisTemplate = redisTemplate;
         this.mapper = mapper;
+        this.executorService = executorService;
     }
 
     RestTemplate restTemplate = new RestTemplate();
@@ -51,7 +54,7 @@ public class KafkaService {
         for (Subscription sub : subscriptions) {
             String endpoint = sub.getTransport().getEndpoint();
             String test = mapper.avroToJson(message.value());
-            SendTask sendTask = new SendTask(restTemplate, endpoint, test, 0);
+            SendTask sendTask = new SendTask(restTemplate, endpoint, test, 0,executorService);
             sendTask.run();
         }
     }
