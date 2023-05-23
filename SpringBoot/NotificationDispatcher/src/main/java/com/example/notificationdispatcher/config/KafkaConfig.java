@@ -44,6 +44,7 @@ public class KafkaConfig {
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaAvroDeserializer.class);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "myGroup");
         props.put("schema.registry.url", schemaRegistryUrl);
-        return new DefaultKafkaConsumerFactory<>(props);
+        consumerFactory = new DefaultKafkaConsumerFactory<>(props);
+        return consumerFactory;
     }
 }
