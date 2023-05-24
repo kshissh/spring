@@ -8,18 +8,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 
 
 @Service
-public class KafkaService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(KafkaService.class);
+public class NotificationSubscriptionListener {
+    private static final Logger LOGGER = LoggerFactory.getLogger(NotificationSubscriptionListener.class);
 
     private KafkaListenerContainerManager kafkaListenerContainerManager;
 
-    KafkaService(KafkaListenerContainerManager kafkaListenerContainerManager) {
+    NotificationSubscriptionListener(KafkaListenerContainerManager kafkaListenerContainerManager) {
         this.kafkaListenerContainerManager = kafkaListenerContainerManager;
     }
 
